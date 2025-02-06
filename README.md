@@ -19,4 +19,10 @@ winget install -e --id RedHat.Podman-Desktop
 podman machine init 
 podman machine set --rootful
 podman machine start
+
+
+podman machine stop
+podman machine rm -f
+winget uninstall -e — id RedHat.Podman
+winget uninstall -e — id RedHat.Podman-Desktop 
 ```

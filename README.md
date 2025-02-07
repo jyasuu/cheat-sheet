@@ -20,9 +20,12 @@ podman machine init
 podman machine set --rootful
 podman machine start
 
-
+# uninstall
 podman machine stop
 podman machine rm -f
-winget uninstall -e — id RedHat.Podman
-winget uninstall -e — id RedHat.Podman-Desktop 
+winget uninstall -e --id RedHat.Podman
+winget uninstall -e --id RedHat.Podman-Desktop
+
+# others
+podman run --rm -it -v E:\data:/mnt/data alpine sh
 ```

@@ -51,3 +51,9 @@ db.inventory.insertMany([
 ## docker
 
 [cheat.sh](https://cheat.sh/docker)
+
+
+## k8s
+
+[cheat.sh](https://cheat.sh/kubectl)
+[reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)

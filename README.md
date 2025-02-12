@@ -57,3 +57,14 @@ db.inventory.insertMany([
 
 [cheat.sh](https://cheat.sh/kubectl)
 [reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
+
+
+## postgres
+
+```sql
+
+select now() - query_start ,*--,pg_cancel_backend(pid),pg_terminate_backend(pid)
+ from pg_catalog.pg_stat_activity psa 
+ where state = 'active'
+ and now() - query_start  > interval '5 minute';
+```

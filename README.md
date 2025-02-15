@@ -68,3 +68,22 @@ select now() - query_start ,*--,pg_cancel_backend(pid),pg_terminate_backend(pid)
  where state = 'active'
  and now() - query_start  > interval '5 minute';
 ```
+
+
+## neovim
+
+```ps1
+winget install Neovim.Neovim
+```
+
+## lazyvim
+
+```ps1
+# required
+Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
+
+# optional but recommended
+Move-Item $env:LOCALAPPDATA\nvim-data $env:LOCALAPPDATA\nvim-data.bak
+git clone https://github.comjyasuu/lazyvim-starter $env:LOCALAPPDATA\nvim
+Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
+```

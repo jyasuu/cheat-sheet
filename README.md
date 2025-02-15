@@ -85,7 +85,7 @@ Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
 
 # optional but recommended
 Move-Item $env:LOCALAPPDATA\nvim-data $env:LOCALAPPDATA\nvim-data.bak
-git clone https://github.comjyasuu/lazyvim-starter $env:LOCALAPPDATA\nvim
+git clone https://github.com/jyasuu/lazyvim-starter $env:LOCALAPPDATA\nvim
 Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
 nvim
 ```

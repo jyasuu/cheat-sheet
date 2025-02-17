@@ -85,7 +85,11 @@ Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
 
 # optional but recommended
 Move-Item $env:LOCALAPPDATA\nvim-data $env:LOCALAPPDATA\nvim-data.bak
-git clone https://github.com/jyasuu/lazyvim-starter $env:LOCALAPPDATA\nvim
+git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvim
 Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
 nvim
 ```
+
+[nvm-java](https://github.com/nvim-java/nvim-java/wiki/Lazyvim)
+[transparant](https://www.reddit.com/r/neovim/comments/15j87k7/lazyvim_setting_transparent_background/)
+

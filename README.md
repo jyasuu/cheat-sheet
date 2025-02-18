@@ -107,3 +107,4 @@ $env:VCPKGRS_DYNAMIC = "1"
 vcpkg install libxml2:x64-windows
 vcpkg integrate install
 ```
+[vcpkg](https://learn.microsoft.com/zh-tw/vcpkg/get_started/get-started?pivots=shell-powershell)

@@ -93,3 +93,17 @@ nvim
 [nvm-java](https://github.com/nvim-java/nvim-java/wiki/Lazyvim)
 [transparant](https://www.reddit.com/r/neovim/comments/15j87k7/lazyvim_setting_transparent_background/)
 
+
+
+## vcpkg
+
+```ps1
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg; .\bootstrap-vcpkg.bat
+$env:VCPKG_ROOT = "D:\git\vcpkg"
+$env:PATH = "$env:VCPKG_ROOT;$env:PATH"
+vcpkg install libxml2:x64-windows
+$env:VCPKGRS_DYNAMIC = "1"
+vcpkg install libxml2:x64-windows
+vcpkg integrate install
+```

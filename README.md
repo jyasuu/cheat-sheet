@@ -1,142 +1,136 @@
-# Technical Cheat Sheet 🔧
 
-## Table of Contents
-1. [Terminal Tools](#-terminal-tools)
-2. [Containerization](#-containerization)
-3. [Databases](#-databases)
-4. [Orchestration](#-orchestration)
-5. [Editors & IDEs](#-editors--ides)
-6. [Package Management](#-package-management)
+# Technical Cheat Sheet
 
----
-
-## 🖥️ Terminal Tools
-
-### 🌟 Starship Cross-Shell Prompt
-**Core Function**: Unified prompt for all shells  
+## 🌟 Starship Cross-Shell Prompt
+**Installation & Setup**
 ```bash
-# One-line install & activation
-curl -sS https://starship.rs/install.sh | sh && eval "$(starship init bash)"
+curl -sS https://starship.rs/install.sh | sh
+eval "$(starship init bash)"
 ```
-📚 [Configuration Guide](https://starship.rs/config/)
+[Official Docs](https://github.com/starship/starship?tab=readme-ov-file)
 
 ---
 
-## 📦 Containerization
-
-### 🐳 Podman (Windows)
+## 🐳 Podman Container Engine
+**Windows Installation**
 ```powershell
-# Full lifecycle management
 winget install -e --id RedHat.Podman
-podman machine init --rootful
+winget install -e --id RedHat.Podman-Desktop 
+
+# Initialize Machine
+podman machine init 
+podman machine set --rootful
 podman machine start
 
-# Clean removal script
-podman machine stop && podman machine rm -f
-winget uninstall -e --id RedHat.{Podman,Podman-Desktop}
+# Uninstallation
+podman machine stop
+podman machine rm -f
+winget uninstall -e --id RedHat.Podman
+winget uninstall -e --id RedHat.Podman-Desktop
 
-# Volume mapping example
-podman run -it --rm -v ${HOME}/data:/app/data alpine:latest
+# Common Commands
+podman run --rm -it -v E:\data:/mnt/data alpine sh
 ```
-
-### 🐋 Docker Quick Reference
-```bash
-# Container lifecycle cheatsheet
-docker build -t myapp . && docker run -dp 3000:3000 myapp
-docker compose up --detach --build
-```
-🚀 [Advanced Patterns](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 
 ---
 
-## 🗃️ Databases
-
-### 📊 MongoDB
-**Connection Template**:
+## 📊 MongoDB Operations
+**Connection Command**
 ```powershell
-mongosh "mongodb+srv://<cluster>.mongodb.net/" --apiVersion 1 --username <user>
+.\mongosh.exe "mongodb+srv://?/" --apiVersion 1 --username ?
 ```
 
-**Indexed Query Example**:
+**Query Examples**
 ```javascript
-// Create index first
-db.inventory.createIndex({item: 1})
+// Insert test data
+db.inventory.insertMany([
+   { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+   { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "A" },
+   { item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D" },
+   { item: "planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D" },
+   { item: "postcard", qty: 45, size: { h: 10, w: 15.25, uom: "cm" }, status: "A" }
+]);
 
-// Optimized find operation
-db.inventory.find(
-  { item: { $in: ["paper"] } },
-  { projection: { _id: 0, item: 1 } }
-).explain("executionStats")
-```
-
-### 🐘 PostgreSQL Performance
-```sql
--- Long-running queries + termination
-SELECT pg_terminate_backend(pid)
-FROM pg_stat_activity 
-WHERE state = 'active' 
-AND now() - query_start > '5 minutes'::interval;
+// Find documents
+db.inventory.find({"item": {"$in": ["paper"]}},{"item": 1})
 ```
 
 ---
 
-## ☸️ Orchestration
+## 🐋 Docker Quick Reference
+[Command Cheat Sheet](https://cheat.sh/docker)
 
-### Kubernetes Survival Kit
+---
+
+## ☸️ Kubernetes Commands
+**Essential Operations**
 ```bash
-# Cluster bootstrap
-kubectl create ns demo && kubectl config set-context --current --namespace=demo
+# Namespace Management
+kubectl create ns demo-ns
 
-# Deployment pipeline
-kubectl apply -f deployment.yaml
-kubectl rollout status deployment/myapp
-kubectl port-forward svc/myapp 8080:80
+# Pod Operations
+kubectl run whoami --image=traefik/whoami -n demo-ns
+kubectl get pods -n demo-ns -o wide
 
-# Debug arsenal
-kubectl get events --sort-by=.metadata.creationTimestamp
-kubectl debug -it pod/myapp --image=busybox -- sh
+# Service Exposure
+kubectl expose --type=NodePort pod whoami --port=80 --name=whoami-svc -n demo-ns
+
+# Debugging Tools
+kubectl run -n demo-ns -it --rm --image=curlimages/curl:8.1.2 curly -- /bin/sh
+kubectl exec -n demo-ns -it whoami -- /bin/bash
+
+# Cleanup Resources
+kubectl delete svc whoami-svc -n demo-ns
 ```
-🔍 [Production Checklist](https://kubernetes.io/docs/tasks/debug/debug-cluster/)
+[Full Command Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
 
 ---
 
-## ⌨️ Editors & IDEs
-
-### ⎔ NeoVim Supercharge
-**Windows Setup**:
-```powershell
-# Clean install script
-irm https://raw.githubusercontent.com/LazyVim/starter/main/install.ps1 | iex
-```
-
-**Essential Plugins**:
-```lua
--- Add to config.lua
-return {
-  "nvim-treesitter/nvim-treesitter",
-  "williamboman/mason.nvim",
-  "mfussenegger/nvim-dap"
-}
+## 🐘 PostgreSQL Monitoring
+**Long-Running Query Check**
+```sql
+SELECT now() - query_start, * 
+FROM pg_catalog.pg_stat_activity psa 
+WHERE state = 'active'
+AND now() - query_start > interval '5 minute';
 ```
 
 ---
 
-## 📦 Package Management
-
-### Vcpkg Power User Setup
+## ⎔ Neovim Setup
+**Windows Installation**
 ```powershell
-# Bootstrap with manifest support
+winget install Neovim.Neovim
+```
+
+**LazyVim Configuration**
+```powershell
+# Backup existing config
+Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
+
+# Initialize LazyVim
+git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvim
+Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
+nvim
+```
+[Extensions](https://www.lazyvim.org/extras)｜[Java Setup](https://github.com/nvim-java/nvim-java/wiki/Lazyvim)
+
+---
+
+## 📦 Vcpkg C++ Package Manager
+**Initialization**
+```powershell
 git clone https://github.com/microsoft/vcpkg
-./vcpkg/bootstrap-vcpkg.bat -disableMetrics
+cd vcpkg; .\bootstrap-vcpkg.bat
 
-# Multi-arch workflow
-vcpkg install --triplet=x64-windows-static fmt spdlog
-vcpkg integrate powershell
+# Environment Setup
+$env:VCPKG_ROOT = "D:\git\vcpkg"
+$env:PATH = "$env:VCPKG_ROOT;$env:PATH"
+
+# Package Installation
+vcpkg install libxml2:x64-windows
+vcpkg integrate install
 ```
-```cmake
-# CMake Integration
-find_package(fmt CONFIG REQUIRED)
-target_link_libraries(myapp PRIVATE fmt::fmt)
-```
+[Official Guide](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell)
 
 ---

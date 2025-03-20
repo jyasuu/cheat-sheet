@@ -74,6 +74,7 @@ kubectl get pods -n demo-ns -o wide
 
 # Service Exposure
 kubectl expose --type=NodePort pod whoami --port=80 --name=whoami-svc -n demo-ns
+kubectl get svc  -n demo-ns -o wide
 
 # Debugging Tools
 kubectl run -n demo-ns -it --rm --image=curlimages/curl:8.1.2 curly -- /bin/sh
@@ -81,6 +82,15 @@ kubectl exec -n demo-ns -it whoami -- /bin/bash
 
 # Cleanup Resources
 kubectl delete svc whoami-svc -n demo-ns
+kubectl delete pod whoami -n demo-ns
+kubectl delete pod curly -n demo-ns
+
+# Others
+
+kubectl get services -n demo-ns
+kubectl get ingresses -n demo-ns
+kubectl describe service whoami-svc -n demo-ns
+kubectl rollout restart deployment.apps/spring-boot-app -n demo-ns
 ```
 [Full Command Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
 

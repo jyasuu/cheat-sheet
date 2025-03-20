@@ -50,15 +50,34 @@ db.inventory.find( {"item": {"$in": ["paper"]}},{"item": 1})
 ```
 
 ## docker
-
-[cheat.sh](https://cheat.sh/docker)
+   
+   [cheat.sh](https://cheat.sh/docker)
 
 
 ## k8s
 
-[cheat.sh](https://cheat.sh/kubectl)
-[reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
+   [cheat.sh](https://cheat.sh/kubectl)
+   [reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
 
+```sh
+
+kubectl create ns demo-ns
+kubectl run whoami --image=traefik/whoami -n demo-ns
+kubectl get pods  -n demo-ns -o wide
+kubectl expose --type=NodePort pod whoami --port=80 --name=whoami-svc -n demo-ns
+kubectl get svc  -n demo-ns -o wide
+kubectl run -n demo-ns -it --rm --image=library/alpine curly -- /bin/sh
+kubectl run -n demo-ns -it --rm --image=curlimages/curl:8.1.2 curly -- /bin/sh -c 'curl 10.98.2.76'
+kubectl run -n demo-ns -it --rm --image=curlimages/curl:8.1.2 curly -- /bin/sh 
+kubectl exec -n demo-ns -it whoami -- /bin/bash
+kubectl delete svc whoami-svc -n demo-ns
+kubectl delete pod whoami -n demo-ns
+kubectl delete pod curly -n demo-ns
+kubectl get services -n demo-ns
+kubectl get ingresses -n demo-ns
+kubectl describe service whoami-svc -n demo-ns
+kubectl rollout restart deployment.apps/spring-boot-app -n demo-ns
+```
 
 ## postgres
 
@@ -89,9 +108,9 @@ git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvim
 Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
 nvim
 ```
-[extras](https://www.lazyvim.org/extras)
-[nvm-java](https://github.com/nvim-java/nvim-java/wiki/Lazyvim)
-[transparant](https://www.reddit.com/r/neovim/comments/15j87k7/lazyvim_setting_transparent_background/)
+   [extras](https://www.lazyvim.org/extras)
+   [nvm-java](https://github.com/nvim-java/nvim-java/wiki/Lazyvim)
+   [transparant](https://www.reddit.com/r/neovim/comments/15j87k7/lazyvim_setting_transparent_background/)
 
 
 
@@ -107,4 +126,4 @@ $env:VCPKGRS_DYNAMIC = "1"
 vcpkg install libxml2:x64-windows
 vcpkg integrate install
 ```
-[vcpkg](https://learn.microsoft.com/zh-tw/vcpkg/get_started/get-started?pivots=shell-powershell)
+   [vcpkg](https://learn.microsoft.com/zh-tw/vcpkg/get_started/get-started?pivots=shell-powershell)

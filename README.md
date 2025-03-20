@@ -1,136 +1,142 @@
+# Technical Cheat Sheet 🔧
 
-# Technical Cheat Sheet
-
-## 🌟 Starship Cross-Shell Prompt
-**Installation & Setup**
-```bash
-curl -sS https://starship.rs/install.sh | sh
-eval "$(starship init bash)"
-```
-[Official Docs](https://github.com/starship/starship?tab=readme-ov-file)
+## Table of Contents
+1. [Terminal Tools](#-terminal-tools)
+2. [Containerization](#-containerization)
+3. [Databases](#-databases)
+4. [Orchestration](#-orchestration)
+5. [Editors & IDEs](#-editors--ides)
+6. [Package Management](#-package-management)
 
 ---
 
-## 🐳 Podman Container Engine
-**Windows Installation**
-```powershell
-winget install -e --id RedHat.Podman
-winget install -e --id RedHat.Podman-Desktop 
+## 🖥️ Terminal Tools
 
-# Initialize Machine
-podman machine init 
-podman machine set --rootful
+### 🌟 Starship Cross-Shell Prompt
+**Core Function**: Unified prompt for all shells  
+```bash
+# One-line install & activation
+curl -sS https://starship.rs/install.sh | sh && eval "$(starship init bash)"
+```
+📚 [Configuration Guide](https://starship.rs/config/)
+
+---
+
+## 📦 Containerization
+
+### 🐳 Podman (Windows)
+```powershell
+# Full lifecycle management
+winget install -e --id RedHat.Podman
+podman machine init --rootful
 podman machine start
 
-# Uninstallation
-podman machine stop
-podman machine rm -f
-winget uninstall -e --id RedHat.Podman
-winget uninstall -e --id RedHat.Podman-Desktop
+# Clean removal script
+podman machine stop && podman machine rm -f
+winget uninstall -e --id RedHat.{Podman,Podman-Desktop}
 
-# Common Commands
-podman run --rm -it -v E:\data:/mnt/data alpine sh
+# Volume mapping example
+podman run -it --rm -v ${HOME}/data:/app/data alpine:latest
 ```
 
----
-
-## 📊 MongoDB Operations
-**Connection Command**
-```powershell
-.\mongosh.exe "mongodb+srv://?/" --apiVersion 1 --username ?
-```
-
-**Query Examples**
-```javascript
-// Insert test data
-db.inventory.insertMany([
-   { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
-   { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "A" },
-   { item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D" },
-   { item: "planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D" },
-   { item: "postcard", qty: 45, size: { h: 10, w: 15.25, uom: "cm" }, status: "A" }
-]);
-
-// Find documents
-db.inventory.find({"item": {"$in": ["paper"]}},{"item": 1})
-```
-
----
-
-## 🐋 Docker Quick Reference
-[Command Cheat Sheet](https://cheat.sh/docker)
-
----
-
-## ☸️ Kubernetes Commands
-**Essential Operations**
+### 🐋 Docker Quick Reference
 ```bash
-# Namespace Management
-kubectl create ns demo-ns
-
-# Pod Operations
-kubectl run whoami --image=traefik/whoami -n demo-ns
-kubectl get pods -n demo-ns -o wide
-
-# Service Exposure
-kubectl expose --type=NodePort pod whoami --port=80 --name=whoami-svc -n demo-ns
-
-# Debugging Tools
-kubectl run -n demo-ns -it --rm --image=curlimages/curl:8.1.2 curly -- /bin/sh
-kubectl exec -n demo-ns -it whoami -- /bin/bash
-
-# Cleanup Resources
-kubectl delete svc whoami-svc -n demo-ns
+# Container lifecycle cheatsheet
+docker build -t myapp . && docker run -dp 3000:3000 myapp
+docker compose up --detach --build
 ```
-[Full Command Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
+🚀 [Advanced Patterns](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 
 ---
 
-## 🐘 PostgreSQL Monitoring
-**Long-Running Query Check**
+## 🗃️ Databases
+
+### 📊 MongoDB
+**Connection Template**:
+```powershell
+mongosh "mongodb+srv://<cluster>.mongodb.net/" --apiVersion 1 --username <user>
+```
+
+**Indexed Query Example**:
+```javascript
+// Create index first
+db.inventory.createIndex({item: 1})
+
+// Optimized find operation
+db.inventory.find(
+  { item: { $in: ["paper"] } },
+  { projection: { _id: 0, item: 1 } }
+).explain("executionStats")
+```
+
+### 🐘 PostgreSQL Performance
 ```sql
-SELECT now() - query_start, * 
-FROM pg_catalog.pg_stat_activity psa 
-WHERE state = 'active'
-AND now() - query_start > interval '5 minute';
+-- Long-running queries + termination
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity 
+WHERE state = 'active' 
+AND now() - query_start > '5 minutes'::interval;
 ```
 
 ---
 
-## ⎔ Neovim Setup
-**Windows Installation**
-```powershell
-winget install Neovim.Neovim
-```
+## ☸️ Orchestration
 
-**LazyVim Configuration**
-```powershell
-# Backup existing config
-Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
+### Kubernetes Survival Kit
+```bash
+# Cluster bootstrap
+kubectl create ns demo && kubectl config set-context --current --namespace=demo
 
-# Initialize LazyVim
-git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvim
-Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
-nvim
+# Deployment pipeline
+kubectl apply -f deployment.yaml
+kubectl rollout status deployment/myapp
+kubectl port-forward svc/myapp 8080:80
+
+# Debug arsenal
+kubectl get events --sort-by=.metadata.creationTimestamp
+kubectl debug -it pod/myapp --image=busybox -- sh
 ```
-[Extensions](https://www.lazyvim.org/extras)｜[Java Setup](https://github.com/nvim-java/nvim-java/wiki/Lazyvim)
+🔍 [Production Checklist](https://kubernetes.io/docs/tasks/debug/debug-cluster/)
 
 ---
 
-## 📦 Vcpkg C++ Package Manager
-**Initialization**
+## ⌨️ Editors & IDEs
+
+### ⎔ NeoVim Supercharge
+**Windows Setup**:
 ```powershell
+# Clean install script
+irm https://raw.githubusercontent.com/LazyVim/starter/main/install.ps1 | iex
+```
+
+**Essential Plugins**:
+```lua
+-- Add to config.lua
+return {
+  "nvim-treesitter/nvim-treesitter",
+  "williamboman/mason.nvim",
+  "mfussenegger/nvim-dap"
+}
+```
+
+---
+
+## 📦 Package Management
+
+### Vcpkg Power User Setup
+```powershell
+# Bootstrap with manifest support
 git clone https://github.com/microsoft/vcpkg
-cd vcpkg; .\bootstrap-vcpkg.bat
+./vcpkg/bootstrap-vcpkg.bat -disableMetrics
 
-# Environment Setup
-$env:VCPKG_ROOT = "D:\git\vcpkg"
-$env:PATH = "$env:VCPKG_ROOT;$env:PATH"
-
-# Package Installation
-vcpkg install libxml2:x64-windows
-vcpkg integrate install
+# Multi-arch workflow
+vcpkg install --triplet=x64-windows-static fmt spdlog
+vcpkg integrate powershell
 ```
-[Official Guide](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell)
+```cmake
+# CMake Integration
+find_package(fmt CONFIG REQUIRED)
+target_link_libraries(myapp PRIVATE fmt::fmt)
+```
 
 ---

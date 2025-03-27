@@ -6,6 +6,9 @@
 ```bash
 curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init bash)"
+
+rustup update stable
+rustup default $RUST_VERSION
 ```
 [Official Docs](https://github.com/starship/starship?tab=readme-ov-file)
 

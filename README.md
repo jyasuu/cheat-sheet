@@ -14,6 +14,46 @@ rustup default $RUST_VERSION # stable-x86_64-unknown-linux-gnu
 
 ---
 
+## 🦀 Rust Cargo Package Manager
+**Common Commands**
+```bash
+# Create a new project
+cargo new my_project
+
+# Build the project
+cargo build
+
+# Build the project in release mode
+cargo build --release
+
+# Run the project
+cargo run
+
+# Test the project
+cargo test
+
+# Check the project without building
+cargo check
+
+# Add a dependency
+cargo add <crate-name> --features a,b,c
+
+# Update dependencies
+cargo update
+
+# Clean the build artifacts
+cargo clean
+
+# Publish to crates.io
+cargo publish
+
+# Generate and open documentation for the project
+cargo doc --open
+
+```
+
+---
+
 ## 🐳 Podman Container Engine
 **Windows Installation**
 ```powershell

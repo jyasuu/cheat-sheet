@@ -244,3 +244,18 @@ spring init example --build=maven --java-version=17 --artifact-id example --boot
 
 
 ```
+
+## curl
+
+```sh
+curl --resolve example.com:443:127.0.0.1 https://example.com
+curl --output example.html "https://example.com/"
+curl --header "PRIVATE-TOKEN: ?" https://example.com/
+curl  --basic --user 'test:test' https://example.com/
+curl -fsSL https://example.com/install.sh | sh
+curl --ftp-ssl --user "test:test" -l sftp://example.com:22/ --key ./id_rsa --pubkey ./id_rsa.pub
+curl --request POST  --data "A=B&C=D" https://example.com
+curl --request POST  --form "A=B" --form "C=D" https://example.com
+curl --upload-file test.txt https://example.com
+curl --ftp-ssl --user test:test -l ftp://example.com:21
+```

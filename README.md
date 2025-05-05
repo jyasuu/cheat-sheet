@@ -299,3 +299,13 @@ curl --request POST  --form "A=B" --form "C=D" https://example.com
 curl --upload-file test.txt https://example.com
 curl --ftp-ssl --user test:test -l ftp://example.com:21
 ```
+
+
+## dd
+
+```sh
+dd if=/dev/zero of=./testfile bs=1G count=1 oflag=direct
+# 1+0 records in
+# 1+0 records out
+# 1073741824 bytes (1.1 GB, 1.0 GiB) copied, 4.76527 s, 225 MB/s
+```

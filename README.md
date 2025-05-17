@@ -309,3 +309,59 @@ dd if=/dev/zero of=./testfile bs=1G count=1 oflag=direct
 # 1+0 records out
 # 1073741824 bytes (1.1 GB, 1.0 GiB) copied, 4.76527 s, 225 MB/s
 ```
+
+
+## terraform
+
+```sh
+echo "⚙️ Installing Terraform..."
+if command -v terraform &> /dev/null; then
+  echo "✅ Terraform already installed."
+  terraform version
+else
+  wget -O - https://apt.releases.hashicorp.com/gpg \
+    | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+    https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+    | sudo tee /etc/apt/sources.list.d/hashicorp.list
+  sudo apt update && sudo apt install -y terraform
+  [ $? -eq 0 ] && echo "✅ Terraform installed." && terraform version \
+                || { echo "❌ Terraform install failed."; exit 1; }
+fi
+
+```
+
+## opentofu
+
+```sh
+echo "⚙️ Installing OpenTofu..."
+if command -v tofu &> /dev/null; then
+  echo "✅ OpenTofu already installed."
+  tofu version
+else
+  curl -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh
+  chmod +x install-opentofu.sh
+  read -p "Proceed with OpenTofu installation? (y/N): " confirm
+  if [[ "$confirm" =~ ^[Yy]$ ]]; then
+    sudo ./install-opentofu.sh --install-method deb
+    rm -f install-opentofu.sh
+    echo "✅ OpenTofu installed."; tofu version
+  else
+    echo "⏩ Skipping OpenTofu."; rm -f install-opentofu.sh
+  fi
+fi
+
+```
+
+
+## k6
+
+```sh
+
+
+sudo gpg -k
+sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+sudo apt-get update
+sudo apt-get install k6
+``

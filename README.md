@@ -331,6 +331,23 @@ fi
 
 ```
 
+
+```sh
+terraform init
+
+terraform plan
+
+terraform apply -auto-approve -var key=value
+
+terraform destroy
+
+terraform fmt
+
+terraform validate
+
+terraform version
+```
+
 ## opentofu
 
 ```sh
@@ -353,6 +370,22 @@ fi
 
 ```
 
+```sh
+tofu init
+
+tofu plan
+
+tofu apply -auto-approve -var key=value
+
+tofu destroy
+
+tofu fmt
+
+tofu validate
+
+tofu version
+```
+
 
 ## k6
 
@@ -365,3 +398,7 @@ echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.i
 sudo apt-get update
 sudo apt-get install k6
 ``
+
+```sh
+k6 run --out influxdb=http://localhost:8086 k6.js
+```

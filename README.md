@@ -1,404 +1,385 @@
+# 🧠 Technical Cheat Sheet
 
-# Technical Cheat Sheet
+A personal collection of CLI tools, language environments, and automation tips for system development and DevOps work.
 
-## 🌟 Starship Cross-Shell Prompt
+---
+
+## 🌟 Starship — Cross-Shell Prompt
+
 **Installation & Setup**
+
 ```bash
 curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init bash)"
 
 rustup update stable
-rustup default $RUST_VERSION # stable-x86_64-unknown-linux-gnu
+rustup default $RUST_VERSION  # e.g., stable-x86_64-unknown-linux-gnu
 ```
-[Official Docs](https://github.com/starship/starship?tab=readme-ov-file)
+
+🔗 [Starship Official Docs](https://github.com/starship/starship?tab=readme-ov-file)
 
 ---
 
-## 🦀 Rust Cargo Package Manager
+## 🦀 Rust — Cargo Package Manager
+
 **Common Commands**
+
 ```bash
-# Create a new project
-cargo new my_project
-
-# Build the project
-cargo build
-
-# Build the project in release mode
-cargo build --release
-
-# Run the project
-cargo run
-
-# Test the project
-cargo test
-
-# Check the project without building
-cargo check
-
-# Add a dependency
-cargo add <crate-name> --features a,b,c
-
-# Update dependencies
-cargo update
-
-# Clean the build artifacts
-cargo clean
-
-# Publish to crates.io
-cargo publish
-
-# Generate and open documentation for the project
-cargo doc --open
-
+cargo new my_project             # Create new project
+cargo build                      # Compile project
+cargo build --release            # Compile optimized binary
+cargo run                        # Run main.rs
+cargo test                       # Run tests
+cargo check                      # Type-check only
+cargo add <crate> --features a,b # Add dependencies
+cargo update                     # Update Cargo.lock
+cargo clean                      # Remove build artifacts
+cargo publish                    # Publish to crates.io
+cargo doc --open                 # Generate and open docs
 ```
 
 ---
 
-## 🐳 Podman Container Engine
+## 🐳 Podman — Container Engine
+
 **Windows Installation**
+
 ```powershell
 winget install -e --id RedHat.Podman
-winget install -e --id RedHat.Podman-Desktop 
+winget install -e --id RedHat.Podman-Desktop
+```
 
-# Initialize Machine
-podman machine init 
+**Initialize Podman**
+
+```powershell
+podman machine init
 podman machine set --rootful
 podman machine start
+```
 
-# Uninstallation
+**Uninstallation**
+
+```powershell
 podman machine stop
 podman machine rm -f
 winget uninstall -e --id RedHat.Podman
 winget uninstall -e --id RedHat.Podman-Desktop
+```
 
-# Common Commands
+**Run Example**
+
+```bash
 podman run --rm -it -v E:\data:/mnt/data alpine sh
 ```
 
 ---
 
-## 📊 MongoDB Operations
-**Connection Command**
+## 📊 MongoDB — Quick Operations
+
+**Connection**
+
 ```powershell
 .\mongosh.exe "mongodb+srv://?/" --apiVersion 1 --username ?
 ```
 
-**Query Examples**
+**Basic Queries**
+
 ```javascript
-// Insert test data
 db.inventory.insertMany([
-   { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
-   { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "A" },
-   { item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D" },
-   { item: "planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D" },
-   { item: "postcard", qty: 45, size: { h: 10, w: 15.25, uom: "cm" }, status: "A" }
+  { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+  ...
 ]);
 
-// Find documents
-db.inventory.find({"item": {"$in": ["paper"]}},{"item": 1})
+db.inventory.find({ item: { $in: ["paper"] } }, { item: 1 });
 ```
 
 ---
 
-## 🐋 Docker Quick Reference
-[Command Cheat Sheet](https://cheat.sh/docker)
+## 🐋 Docker — Quick Reference
+
+🔗 [cheat.sh/docker](https://cheat.sh/docker)
 
 ---
 
-## ☸️ Kubernetes Commands
-**Essential Operations**
+## ☸️ Kubernetes — Common Commands
+
+**Basic Operations**
+
 ```bash
-# Namespace Management
 kubectl create ns demo-ns
-
-# Pod Operations
 kubectl run whoami --image=traefik/whoami -n demo-ns
+kubectl expose pod whoami --type=NodePort --port=80 --name=whoami-svc -n demo-ns
 kubectl get pods -n demo-ns -o wide
+kubectl get svc -n demo-ns -o wide
+```
 
-# Service Exposure
-kubectl expose --type=NodePort pod whoami --port=80 --name=whoami-svc -n demo-ns
-kubectl get svc  -n demo-ns -o wide
+**Debugging**
 
-# Debugging Tools
+```bash
 kubectl run -n demo-ns -it --rm --image=curlimages/curl:8.1.2 curly -- /bin/sh
 kubectl exec -n demo-ns -it whoami -- /bin/bash
+```
 
-# Cleanup Resources
+**Cleanup**
+
+```bash
 kubectl delete svc whoami-svc -n demo-ns
 kubectl delete pod whoami -n demo-ns
 kubectl delete pod curly -n demo-ns
+```
 
-# Others
+**Other Useful**
 
+```bash
+kubectl get deploy -n demo-ns
+kubectl get rs -n demo-ns
+kubectl get po -n demo-ns
 kubectl get services -n demo-ns
 kubectl get ingresses -n demo-ns
 kubectl describe service whoami-svc -n demo-ns
 kubectl rollout restart deployment.apps/spring-boot-app -n demo-ns
 ```
-[Full Command Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
+
+🔗 [Kubernetes Command Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
 
 ---
 
-## 🐘 PostgreSQL Monitoring
-**Long-Running Query Check**
+## 🐘 PostgreSQL — Monitoring
+
+**Check Long-Running Queries**
+
 ```sql
 SELECT now() - query_start, * 
-FROM pg_catalog.pg_stat_activity psa 
-WHERE state = 'active'
-AND now() - query_start > interval '5 minute';
+FROM pg_catalog.pg_stat_activity 
+WHERE state = 'active' 
+  AND now() - query_start > interval '5 minute';
 ```
 
 ---
 
-## ⎔ Neovim Setup
-**Windows Installation**
+## ⎔ Neovim — Setup Guide
+
+**Install on Windows**
+
 ```powershell
 winget install Neovim.Neovim
 ```
 
-**LazyVim Configuration**
-```powershell
-# Backup existing config
-Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
+**LazyVim Setup**
 
-# Initialize LazyVim
+```powershell
+Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
 git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvim
 Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
 nvim
 ```
-[Extensions](https://www.lazyvim.org/extras)｜[Java Setup](https://github.com/nvim-java/nvim-java/wiki/Lazyvim)
+
+🔗 [LazyVim Extras](https://www.lazyvim.org/extras) ｜ [Java Setup Guide](https://github.com/nvim-java/nvim-java/wiki/Lazyvim)
 
 ---
 
-## 📦 Vcpkg C++ Package Manager
-**Initialization**
+## 📦 Vcpkg — C++ Package Manager
+
+**Bootstrap**
+
 ```powershell
 git clone https://github.com/microsoft/vcpkg
 cd vcpkg; .\bootstrap-vcpkg.bat
+```
 
-# Environment Setup
+**Env Setup**
+
+```powershell
 $env:VCPKG_ROOT = "D:\git\vcpkg"
 $env:PATH = "$env:VCPKG_ROOT;$env:PATH"
+```
 
-# Package Installation
+**Install Package**
+
+```powershell
 vcpkg install libxml2:x64-windows
 vcpkg integrate install
 ```
-[Official Guide](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell)
+
+🔗 [Official Guide](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell)
 
 ---
 
+## 🌱 Spring Boot — Project Init Examples
 
-## Spring Boot
+**Setup**
 
-```sh
-
+```bash
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install java 17.0.10-zulu
 sdk install springboot
-
-spring init openai --build=maven --java-version=17  \
---name openai --packaging jar  \
---description 'openai application'  --artifact-id openai \
---boot-version 3.2.2  --dependencies=web,lombok,docker-compose,spring-ai-openai,spring-ai-vectordb-elasticsearch,spring-ai-vectordb-cassandra,spring-ai-vectordb-redis,spring-ai-vectordb-mongodb-atlas,spring-ai-vectordb-pgvector  \
---group-id org.jyasu --extract --force
-
-spring init ollama --build=maven --java-version=17  \
---name ollama --packaging jar  \
---description 'ollama application'  --artifact-id ollama \
---boot-version 3.2.2  --dependencies=web,lombok,docker-compose,spring-ai-ollama  \
---group-id org.jyasu --extract --force
-
-
-spring init postgresql --build=maven --java-version=17  \
---name postgresql --packaging jar  \
---description 'postgresql application'  --artifact-id postgresql \
---boot-version 3.2.2  --dependencies=web,lombok,docker-compose,postgresql,data-jpa,actuator,distributed-tracing  \
---group-id org.jyasu --extract --force
-
-
-
-spring init cassandra --build=maven --java-version=17  \
---name cassandra --packaging jar  \
---description 'cassandra application'  --artifact-id cassandra \
---boot-version 3.2.2  --dependencies=web,lombok,docker-compose,data-cassandra,data-cassandra-reactive  \
---group-id org.jyasu --extract --force
-
-
-
-spring init mongodb --build=maven --java-version=17  \
---name mongodb --packaging jar  \
---description 'mongodb application'  --artifact-id mongodb \
---boot-version 3.2.2  --dependencies=web,lombok,docker-compose,data-mongodb,data-mongodb-reactive,graphql  \
---group-id org.jyasu --extract --force
-
-
-spring init elasticsearch --build=maven --java-version=17  \
---name elasticsearch --packaging jar  \
---description 'elasticsearch application'  --artifact-id elasticsearch \
---boot-version 3.2.2  --dependencies=web,lombok,docker-compose,data-elasticsearch  \
---group-id org.jyasu --extract --force
-
-
-spring init redis --build=maven --java-version=17  \
---name redis --packaging jar  \
---description 'redis application'  --artifact-id redis \
---boot-version 3.2.2  --dependencies=web,lombok,docker-compose,data-redis,data-redis-reactive  \
---group-id org.jyasu --extract --force
-
-
-spring init kafka --build=maven --java-version=17  \
---name kafka --packaging jar  \
---description 'kafka application'  --artifact-id kafka \
---boot-version 3.2.2  --dependencies=web,lombok,docker-compose,kafka,kafka-streams  \
---group-id org.jyasu --extract --force
-
-spring init amqp --build=maven --java-version=17  \
---name amqp --packaging jar  \
---description 'amqp application'  --artifact-id amqp \
---boot-version 3.2.2  --dependencies=web,lombok,docker-compose,amqp-streams,amqp  \
---group-id org.jyasu --extract --force
-
-
-spring init vault --build=maven --java-version=17  \
---name vault --packaging jar  \
---description 'vault application'  --artifact-id vault \
---boot-version 3.2.2  --dependencies=web,lombok,docker-compose,cloud-starter-vault-config  \
---group-id org.jyasu --extract --force
-
-spring init shell --build=maven --java-version=17  \
---name shell --packaging jar  \
---description 'shell application'  --artifact-id shell \
---boot-version 3.2.2  --dependencies=lombok,docker-compose,native,spring-shell  \
---group-id org.jyasu --extract --force
-
-spring init actuator --build=maven --java-version=17  \
---name actuator --packaging jar  \
---description 'actuator application'  --artifact-id actuator \
---boot-version 3.2.2  --dependencies=web,lombok,actuator  \
---group-id org.jyasu --extract --force
-
-
-spring init example --build=maven --java-version=17 --artifact-id example --boot-version 3.3.7  --group-id com.jyasu --packaging=jar -d=web,jdbc,lombok,docker-compose,postgresql,data-jpa,actuator --name example --extract --force
-
-
 ```
 
-## curl
+**Init Templates**
 
-```sh
+```bash
+spring init my-app --build=maven --java-version=17 --group-id org.jyasu \
+--boot-version=3.2.2 --packaging jar --extract --force \
+--dependencies=web,lombok,docker-compose # web,lombok,docker-compose,spring-ai-openai,spring-ai-vectordb-elasticsearch,spring-ai-vectordb-cassandra,spring-ai-vectordb-redis,spring-ai-vectordb-mongodb-atlas,spring-ai-vectordb-pgvector,web,lombok,docker-compose,spring-ai-ollama,postgresql,data-jpa,actuator,distributed-tracing,web,lombok,docker-compose,data-cassandra,data-cassandra-reactive,web,lombok,docker-compose,data-mongodb,data-mongodb-reactive,graphql,web,lombok,docker-compose,data-elasticsearch,web,lombok,docker-compose,data-redis,data-redis-reactive,web,lombok,docker-compose,kafka,kafka-streams,web,lombok,docker-compose,amqp-streams,amqp,web,lombok,docker-compose,cloud-starter-vault-config,lombok,docker-compose,native,spring-shell
+```
+
+🧪 Examples for:
+
+* [x] PostgreSQL
+* [x] MongoDB
+* [x] Cassandra
+* [x] Redis
+* [x] ElasticSearch
+* [x] Kafka
+* [x] AMQP
+* [x] Vault
+* [x] Spring Shell
+* [x] Actuator
+* [x] Spring AI + Ollama
+
+*Use `--artifact-id` and `--description` as needed.*
+
+---
+
+## 🌐 curl — Handy Examples
+
+```bash
 curl --resolve example.com:443:127.0.0.1 https://example.com
 curl --output example.html "https://example.com/"
 curl --header "PRIVATE-TOKEN: ?" https://example.com/
-curl  --basic --user 'test:test' https://example.com/
+curl --basic --user 'test:test' https://example.com/
 curl -fsSL https://example.com/install.sh | sh
 curl --ftp-ssl --user "test:test" -l sftp://example.com:22/ --key ./id_rsa --pubkey ./id_rsa.pub
-curl --request POST  --data "A=B&C=D" https://example.com
-curl --request POST  --form "A=B" --form "C=D" https://example.com
+curl --request POST --data "A=B&C=D" https://example.com
+curl --request POST --form "A=B" --form "C=D" https://example.com
 curl --upload-file test.txt https://example.com
 curl --ftp-ssl --user test:test -l ftp://example.com:21
 ```
 
+---
 
-## dd
+## 💽 dd — Disk Benchmarking
 
-```sh
+```bash
 dd if=/dev/zero of=./testfile bs=1G count=1 oflag=direct
+# Example Output:
 # 1+0 records in
 # 1+0 records out
 # 1073741824 bytes (1.1 GB, 1.0 GiB) copied, 4.76527 s, 225 MB/s
 ```
 
+---
 
-## terraform
+## 🌍 Terraform — Provisioning
 
-```sh
+**Install Script**
+
+```bash
 echo "⚙️ Installing Terraform..."
-if command -v terraform &> /dev/null; then
-  echo "✅ Terraform already installed."
-  terraform version
+if command -v terraform &> /dev/null
+then
+    echo "✅ Terraform is already installed."
+    terraform version
 else
-  wget -O - https://apt.releases.hashicorp.com/gpg \
-    | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-    https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
-    | sudo tee /etc/apt/sources.list.d/hashicorp.list
-  sudo apt update && sudo apt install -y terraform
-  [ $? -eq 0 ] && echo "✅ Terraform installed." && terraform version \
-                || { echo "❌ Terraform install failed."; exit 1; }
+    wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    sudo apt update && sudo apt install -y terraform
+    if [ $? -eq 0 ]; then
+        echo "✅ Terraform installed successfully."
+        terraform version
+    else
+        echo "❌ Error installing Terraform. Please check the output above."
+        exit 1
+    fi
 fi
 
 ```
 
+**Workflow**
 
-```sh
+```bash
 terraform init
-
 terraform plan
-
 terraform apply -auto-approve -var key=value
-
 terraform destroy
-
 terraform fmt
-
 terraform validate
-
 terraform version
 ```
 
-## opentofu
+---
 
-```sh
+## 🧬 OpenTofu — Terraform Alternative
+
+**Installer**
+
+```bash
 echo "⚙️ Installing OpenTofu..."
-if command -v tofu &> /dev/null; then
-  echo "✅ OpenTofu already installed."
-  tofu version
+if command -v tofu &> /dev/null
+then
+    echo "✅ OpenTofu is already installed."
+    tofu version
 else
-  curl -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh
-  chmod +x install-opentofu.sh
-  read -p "Proceed with OpenTofu installation? (y/N): " confirm
-  if [[ "$confirm" =~ ^[Yy]$ ]]; then
-    sudo ./install-opentofu.sh --install-method deb
-    rm -f install-opentofu.sh
-    echo "✅ OpenTofu installed."; tofu version
-  else
-    echo "⏩ Skipping OpenTofu."; rm -f install-opentofu.sh
-  fi
-fi
+    # Download the installer script
+    curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh
+    # Alternatively: wget --secure-protocol=TLSv1_2 --https-only https://get.opentofu.org/install-opentofu.sh -O install-opentofu.sh
 
+    # Give it execution permissions
+    chmod +x install-opentofu.sh
+
+    echo "ℹ️ Please inspect the downloaded OpenTofu installer script (install-opentofu.sh) if you wish."
+    read -p "Proceed with OpenTofu installation? (y/N): " confirm_tofu
+    if [[ "$confirm_tofu" =~ ^[Yy]$ ]]; then
+        # Run the installer
+        sudo ./install-opentofu.sh --install-method deb
+        # Remove the installer
+        rm -f install-opentofu.sh
+        if [ $? -eq 0 ]; then
+            echo "✅ OpenTofu installed successfully."
+            tofu version
+        else
+            echo "❌ Error installing OpenTofu. Please check the output above."
+            # exit 1 # Decided not to exit if Tofu fails, as Terraform might be primary
+        fi
+    else
+        echo "⏩ Skipping OpenTofu installation."
+        rm -f install-opentofu.sh
+    fi
+fi
 ```
 
-```sh
+**Workflow**
+
+```bash
 tofu init
-
 tofu plan
-
 tofu apply -auto-approve -var key=value
-
 tofu destroy
-
 tofu fmt
-
 tofu validate
-
 tofu version
 ```
 
+---
 
-## k6
+## 📈 k6 — Load Testing
 
-```sh
+**Install**
 
+```bash
 
 sudo gpg -k
 sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
 echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
 sudo apt-get update
 sudo apt-get install k6
-``
+```
 
-```sh
+**Run Test**
+
+```bash
 k6 run --out influxdb=http://localhost:8086 k6.js
 ```
+
+---

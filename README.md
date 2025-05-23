@@ -383,3 +383,19 @@ k6 run --out influxdb=http://localhost:8086 k6.js
 ```
 
 ---
+
+
+
+## Rabbitmq
+
+```bash
+rabbitmqadmin -u admin -p Pcc.123456 export broker
+ 
+rabbitmqadmin -u admin -p Pcc.123456 import broker
+
+rabbitmqadmin -u admin -p admin publish \
+    exchange=ex \
+    routing_key=key \
+    payload='{"a": "","b":{"c": ""}}' \
+    properties='{"headers": {"id": "6D933FBEEA6D42E2AD0E1FA479A5DABA"}}'
+```

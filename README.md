@@ -411,3 +411,13 @@ sudo ufw status numbered
 sudo ufw insert 1  deny from 192.168.1.0/24 to any port 80,443 proto tcp
 sudo ufw delete 1
 ```
+
+
+## acli
+
+```bash
+curl -LO "https://acli.atlassian.com/linux/latest/acli_linux_amd64/acli"
+chmod +x ./acli
+sudo install -o root -g root -m 0755 acli /usr/local/bin/acli
+
+```

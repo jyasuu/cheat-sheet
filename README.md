@@ -138,6 +138,12 @@ kubectl get services -n demo-ns
 kubectl get ingresses -n demo-ns
 kubectl describe service whoami-svc -n demo-ns
 kubectl rollout restart deployment.apps/spring-boot-app -n demo-ns
+(
+NAMESPACE=your-rogue-namespace
+kubectl proxy &
+kubectl get namespace $NAMESPACE -o json |jq '.spec = {"finalizers":[]}' >temp.json
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @temp.json 127.0.0.1:8001/api/v1/namespaces/$NAMESPACE/finalize
+)
 ```
 
 🔗 [Kubernetes Command Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)

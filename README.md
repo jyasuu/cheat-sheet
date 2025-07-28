@@ -312,6 +312,8 @@ terraform destroy
 terraform fmt
 terraform validate
 terraform version
+
+terraform state rm $RESOURCE
 ```
 
 ---

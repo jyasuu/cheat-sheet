@@ -429,3 +429,19 @@ chmod +x ./acli
 sudo install -o root -g root -m 0755 acli /usr/local/bin/acli
 acli rovodev auth login
 ```
+
+
+
+## gcloud
+
+```bash
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz
+tar -xf google-cloud-cli-linux-x86_64.tar.gz
+./google-cloud-sdk/install.sh
+./google-cloud-sdk/bin/gcloud init
+gcloud auth application-default login
+gcloud container clusters get-credentials cluster --region ? --project ?
+```
+
+
+

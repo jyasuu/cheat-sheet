@@ -70,6 +70,7 @@ npm install -g @anthropic-ai/claude-code
 npm install -g @musistudio/claude-code-router
 git clone https://github.com/wshobson/agents .claude/agents/wshobson
 git clone https://github.com/dl-ezo/claude-code-sub-agents  .claude/agents/dl-ezo
+# https://github.com/ruvnet/claude-flow
 ```
 
 Path to config file: `~/.claude-code-router/config.json`

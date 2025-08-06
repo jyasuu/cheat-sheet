@@ -24,7 +24,16 @@ Example configuration file for Claude Code Router:
       "transformer": {
         "use": ["gemini"]
       }
-    }
+    },
+      {
+        "name": "gemini",
+        "api_base_url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+        "api_key": "?",
+        "models": ["gemini-2.5-flash", "gemini-2.5-pro"],
+        "transformer": {
+          "use": ["openapi"]
+        }
+      }
   ],
   "Router": {
     "default": "openrouter,deepseek/deepseek-chat-v3-0324:free",

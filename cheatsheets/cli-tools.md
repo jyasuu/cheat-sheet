@@ -100,3 +100,15 @@ istioctl version
 istioctl install --set profile=ambient --skip-confirmation
 
 ```
+
+### example
+```bash
+
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/bookinfo/platform/kube/bookinfo.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/bookinfo/platform/kube/bookinfo-versions.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
+kubectl annotate gateway bookinfo-gateway networking.istio.io/service-type=ClusterIP --namespace=default
+kubectl get gateway
+kubectl port-forward svc/bookinfo-gateway-istio 8080:80
+```
+

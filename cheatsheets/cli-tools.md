@@ -97,5 +97,6 @@ curl -L https://istio.io/downloadIstio | sh -
 cd istio-1.26.3
 export PATH=$PWD/bin:$PATH
 istioctl version
+istioctl install --set profile=ambient --skip-confirmation
 
 ```

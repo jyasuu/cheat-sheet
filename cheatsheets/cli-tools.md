@@ -88,3 +88,14 @@ sudo tar -xvzf ./ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
 ngrok config add-authtoken '?'
 ngrok http http://localhost:8080
 ```
+
+
+## istio
+
+```bash
+curl -L https://istio.io/downloadIstio | sh -
+cd istio-1.26.3
+export PATH=$PWD/bin:$PATH
+istioctl version
+
+```

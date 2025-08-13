@@ -209,3 +209,11 @@ kubectl exec deploy/curl -- sh -c "for i in \$(seq 1 100); do curl -s http://pro
 
 ```
 
+
+## sed
+
+```bash
+sed -i 's/\r//g'
+```
+
+

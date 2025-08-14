@@ -70,6 +70,7 @@ kubectl delete pod curly -n demo-ns
 **Other Useful**
 
 ```bash
+kubectl get resourcequota -n demo-ns
 kubectl get deploy -n demo-ns
 kubectl get rs -n demo-ns
 kubectl get po -n demo-ns

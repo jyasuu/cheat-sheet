@@ -60,6 +60,16 @@ WHERE state = 'active'
 ```
 
 
+**Others**
+
+```sql
+\x format display
+
+SELECT jsonb_pretty(json_column::jsonb) FROM your_table;
+
+```
+
+
 ## 📊 MongoDB — Comprehensive Guide
 
 **Connection**

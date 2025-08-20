@@ -79,6 +79,7 @@ gcloud container clusters get-credentials cluster --region ? --project ?
 gcloud components install gke-gcloud-auth-plugin
 gcloud services enable compute.googleapis.com --project=?
 gcloud compute addresses list
+gcloud compute ssl-certificates list
 ```
 
 

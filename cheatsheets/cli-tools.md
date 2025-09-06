@@ -78,7 +78,7 @@ tar -xf google-cloud-cli-linux-x86_64.tar.gz
 ./google-cloud-sdk/install.sh
 ./google-cloud-sdk/bin/gcloud init
 gcloud auth application-default login
-gcloud container clusters get-credentials cluster --region ? --project ?
+gcloud container clusters get-credentials $cluster --region ? --project ?
 gcloud components install gke-gcloud-auth-plugin
 gcloud services enable compute.googleapis.com --project=?
 gcloud compute addresses list

@@ -88,6 +88,7 @@ curl -k -H "Content-Type: application/json" -X PUT --data-binary @temp.json 127.
 kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
   kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
 
+kubectl create secret docker-registry gitlab-registry --docker-server=https://docker.io --docker-username=jyasu  --docker-password=jyasu --docker-email=jyasu@example.com --dry-run=client -o yaml
 ```
 
 🔗 [Kubernetes Command Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)

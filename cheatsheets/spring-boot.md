@@ -3,6 +3,8 @@
 
 ### **Common Spring Boot Actuator Endpoints**
 
+https://docs.spring.io/spring-boot/reference/actuator/endpoints.html
+
 | Endpoint                | Description                                                      |
 |-------------------------|------------------------------------------------------------------|
 | `/actuator/health`      | Shows application health information (UP/DOWN, details, etc.)    |

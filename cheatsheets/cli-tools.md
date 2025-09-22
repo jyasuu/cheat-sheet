@@ -222,4 +222,12 @@ kubectl exec deploy/curl -- sh -c "for i in \$(seq 1 100); do curl -s http://pro
 sed -i 's/\r//g'
 ```
 
+## find
+
+```bash
+find ./ -type f -size +100M
+find ./ -type f -name '*.log' -exec rm {} +
+```
+
+
 

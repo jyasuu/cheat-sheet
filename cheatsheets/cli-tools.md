@@ -227,6 +227,7 @@ sed -i 's/\r//g'
 ```bash
 find ./ -type f -size +100M
 find ./ -type f -name '*.log' -exec rm {} +
+find ./ -type f -name "*.log" -mtime +3 -exec rm {} +
 ```
 
 

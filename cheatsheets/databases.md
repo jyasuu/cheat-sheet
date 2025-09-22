@@ -67,6 +67,28 @@ WHERE state = 'active'
 
 SELECT jsonb_pretty(json_column::jsonb) FROM your_table;
 
+SELECT *
+FROM my_table
+WHERE my_column ~ '[\u0009-\u000D\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]';
+SELECT * FROM users WHERE name LIKE 'Leo%';
+SELECT * FROM users WHERE name ILIKE 'leo%';
+SELECT * FROM users WHERE name SIMILAR TO '(Leo|Luke)%';
+SELECT * FROM logs WHERE message ~ 'error|fail';
+SELECT * FROM logs WHERE message ~* 'error|fail';
+SELECT * FROM logs WHERE message !~ 'success';
+SELECT * FROM products WHERE tags @> ARRAY['electronics'];
+SELECT * FROM products WHERE ARRAY['electronics'] <@ tags;
+SELECT * FROM products WHERE tags && ARRAY['electronics', 'home'];
+SELECT data->'name' FROM users;
+SELECT data->>'name' FROM users;
+SELECT data#>'{address,city}' FROM users;
+SELECT * FROM events WHERE timerange @> now();
+SELECT * FROM events WHERE timerange && '[2025-01-01,2025-12-31)'::tstzrange;
+SELECT * FROM table1 WHERE col1 IS DISTINCT FROM col2;
+SELECT * FROM users WHERE role IN ('admin', 'user');
+
+
+
 ```
 
 

@@ -92,3 +92,20 @@ kubectl create secret docker-registry gitlab-registry --docker-server=https://do
 ```
 
 🔗 [Kubernetes Command Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
+
+
+## Helm
+
+```ps1
+
+argocd app create helm-app `
+  --repo https://github.com/jyasuu/helm-demo.git `
+  --path . `
+  --revision main `
+  --dest-server https://kubernetes.default.svc `
+  --dest-namespace helm-demo `
+  --sync-policy automated `
+  --helm-set-file values=values.yaml
+```
+
+

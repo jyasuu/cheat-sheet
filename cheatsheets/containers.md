@@ -120,7 +120,7 @@ Invoke-WebRequest -Uri $url -OutFile $output
 argocd login argocd.example.com --sso
 
 
-argocd repo add [https://pcggit.pouchen.com/sd2ap1/mda/mda-helm.git](https://github.com/jyasuu/helm-demo.git) `
+argocd repo add https://github.com/jyasuu/helm-demo.git `
  --username ? `
  --password ?
 

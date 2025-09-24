@@ -131,7 +131,14 @@ argocd app create helm-app `
   --dest-server https://kubernetes.default.svc `
   --dest-namespace helm-demo `
   --sync-policy automated `
-  --helm-set-file values=values.yaml
+  --values values-lab.yaml `
+  --project helm-app 
+
+argocd app list
+argocd app sync helm-app
+argocd app delete helm-app
+argocd app history helm-app
+argocd app manifests helm-app
 ```
 
 

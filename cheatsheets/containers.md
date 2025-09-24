@@ -98,6 +98,25 @@ kubectl create secret docker-registry gitlab-registry --docker-server=https://do
 
 ```ps1
 
+helm template helm-app .  --values values.yaml -n helm-demo
+```
+
+
+## Argocd
+
+```ps1
+
+$version = (Invoke-RestMethod https://api.github.com/repos/argoproj/argo-cd/releases/latest).tag_name
+$url = "https://github.com/argoproj/argo-cd/releases/download/" + $version + "/argocd-windows-amd64.exe"
+$output = "argocd.exe"
+Invoke-WebRequest -Uri $url -OutFile $output
+argocd login argocd.example.com --sso
+
+
+argocd repo add [https://pcggit.pouchen.com/sd2ap1/mda/mda-helm.git](https://github.com/jyasuu/helm-demo.git) `
+ --username ? `
+ --password ?
+
 argocd app create helm-app `
   --repo https://github.com/jyasuu/helm-demo.git `
   --path . `

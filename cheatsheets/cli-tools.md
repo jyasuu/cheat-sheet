@@ -8,11 +8,6 @@
 curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init bash)"
 
-rustup update stable
-rustup default $RUST_VERSION  # e.g., stable-x86_64-unknown-linux-gnu
-rustup target add x86_64-unknown-linux-gnu
-cargo install cross --git https://github.com/cross-rs/cross (windows depend docker)
-cross build --target x86_64-unknown-linux-gnu --release
 ```
 
 🔗 [Starship Official Docs](https://github.com/starship/starship?tab=readme-ov-file)

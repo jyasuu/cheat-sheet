@@ -5,6 +5,13 @@
 **Common Commands**
 
 ```bash
+
+rustup update stable
+rustup default $RUST_VERSION  # e.g., stable-x86_64-unknown-linux-gnu
+rustup target add x86_64-unknown-linux-gnu
+cargo install cross --git https://github.com/cross-rs/cross (windows depend docker)
+cross build --target x86_64-unknown-linux-gnu --release
+
 cargo new my_project             # Create new project
 cargo build                      # Compile project
 cargo build --release            # Compile optimized binary

@@ -38,6 +38,16 @@ podman run --rm -it -v E:\data:/mnt/data alpine sh
 
 🔗 [cheat.sh/docker](https://cheat.sh/docker)
 
+```sh
+docker run --restart always -v /tmp:/tmp -v /conf:/conf -e PASS=pass -e ACCT=acct -p 80:80 -p 443:443 -d nginx
+docker exec --it nginx sh
+docker system prune -af
+docker save postgres:15.3 > postgres.tar
+docker load < postgres.tar
+docker buildx build -t test .
+
+```
+
 ---
 
 ## ☸️ Kubernetes — Common Commands

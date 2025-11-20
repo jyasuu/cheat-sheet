@@ -33,3 +33,8 @@ env_key = "GEMINI_API_KEY"
 
 
 ```
+
+```sh
+codex mcp add playwright npx "@playwright/mcp@latest"
+codex mcp add context7 -- npx -y @upstash/context7-mcp
+```

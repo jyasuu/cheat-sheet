@@ -50,6 +50,11 @@ args = [
 ]
 env = { SystemRoot="C:\\Windows", PROGRAMFILES="C:\\Program Files" }
 startup_timeout_ms = 20_000
+
+
+[mcp_servers.serena]
+command = "uvx"
+args = ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server", "--context", "codex"]
 ```
 
 ```sh

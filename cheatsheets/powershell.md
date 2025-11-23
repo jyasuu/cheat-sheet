@@ -69,3 +69,14 @@ else {
 }
 
 ```
+
+
+
+```ps1
+Get-Process | Where-Object {$_.ProcessName -like "*python*"}
+
+Get-CimInstance Win32_Process |
+    Where-Object { $_.Name -like "python*" } |
+    Select-Object ProcessId, Name, CommandLine
+
+```

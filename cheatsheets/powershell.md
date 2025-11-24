@@ -80,3 +80,39 @@ Get-CimInstance Win32_Process |
     Select-Object ProcessId, Name, CommandLine
 
 ```
+
+
+
+```ps1
+function Get-ParentChain {
+    param(
+        [int]$ProcessId
+    )
+
+    $proc = Get-CimInstance Win32_Process -Filter "ProcessId = $ProcessId"
+
+    if (-not $proc) {
+        return @()
+    }
+
+    if ($proc.ParentProcessId -eq 0) {
+        return @($proc)
+    }
+
+    return @($proc) + (Get-ParentChain -ProcessId $proc.ParentProcessId)
+}
+
+
+Get-CimInstance Win32_Process |
+    Where-Object { $_.Name -like "python*" } |
+    ForEach-Object {
+        $chain = Get-ParentChain -ProcessId $_.ProcessId
+
+        [PSCustomObject]@{
+            PID          = $_.ProcessId
+            Name         = $_.Name
+            ParentChain  = ($chain | Select-Object -ExpandProperty Name) -join " -> "
+        }
+    }
+
+```

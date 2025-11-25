@@ -98,6 +98,7 @@ SELECT * FROM users WHERE role IN ('admin', 'user');
 
 ```powershell
 .\mongosh.exe "mongodb+srv://?/" --apiVersion 1 --username ?
+docker run -ti --rm alpine/mongosh mongosh "mongodb://user:pass@host:27017/db"
 ```
 
 **Basic Queries**

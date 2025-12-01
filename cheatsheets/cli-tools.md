@@ -223,6 +223,7 @@ sed -i 's/\r//g'
 find ./ -type f -size +100M
 find ./ -type f -name '*.log' -exec rm {} +
 find ./ -type f -name "*.log" -mtime +3 -exec rm {} +
+find ./ -type f -name "*.log" -mtime +365 -delete
 ```
 
 

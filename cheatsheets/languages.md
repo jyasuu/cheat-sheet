@@ -11,6 +11,8 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 rustup update stable
 rustup default $RUST_VERSION  # e.g., stable-x86_64-unknown-linux-gnu
 rustup target add x86_64-unknown-linux-gnu
+rustup target add x86_64-unknown-linux-musl
+cargo build --release --target x86_64-unknown-linux-musl
 cargo install cross --git https://github.com/cross-rs/cross (windows depend docker)
 cross build --target x86_64-unknown-linux-gnu --release
 

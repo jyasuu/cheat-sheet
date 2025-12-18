@@ -102,7 +102,7 @@ SELECT * FROM events WHERE timerange && '[2025-01-01,2025-12-31)'::tstzrange;
 SELECT * FROM table1 WHERE col1 IS DISTINCT FROM col2;
 SELECT * FROM users WHERE role IN ('admin', 'user');
 
-
+set search_path=public;
 
 ```
 
@@ -310,4 +310,11 @@ CREATE DATABASE LINK $LINK_NAME
             )';
 
 DROP DATABASE LINK $LINK_NAME; 
+```
+
+
+## tbls
+
+```bash
+tbls doc postgres://postgres:postgres@localhost:5432/matdb?sslmode=disable
 ```

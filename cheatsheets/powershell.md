@@ -2,7 +2,8 @@
 
 ```ps1
 Get-ChildItem Env:
-$env:Path = "C:\Users\leo.yen\.local\bin;$env:Path"   
+$env:Path = "C:\Users\leo.yen\.local\bin;$env:Path"
+(Get-PSReadlineOption).HistorySavePath
 ```
 
 ```ps1

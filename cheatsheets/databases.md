@@ -104,6 +104,13 @@ SELECT * FROM users WHERE role IN ('admin', 'user');
 
 set search_path=public;
 
+create unlogged table unlogged_table (
+  id varchar(10) not null
+);
+alter table 
+  unlogged_table setlogged;
+
+
 ```
 
 

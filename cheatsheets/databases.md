@@ -5,12 +5,15 @@
 **Connection**
 ```bash
 psql -U username -d dbname -h host
+
 ```
 
 **Backups**
 ```bash
 pg_dump dbname > backup.sql
 pg_restore -d dbname backup.sql
+pg_dump -v -d 'postgres://postgres:postgres@localhost:5432/a' -n a -Fd -j 5 -f /backup/backup -t 'a.(test)' --no-acl --no-owner
+pg_restore -v -d 'postgres://postgres:postgres@localhost:5432/b' -Fd -j5 /backup/backup --no-acl  --no-owner --disable-triggers
 ```
 
 **Transactions**
@@ -109,6 +112,11 @@ create unlogged table unlogged_table (
 );
 alter table 
   unlogged_table setlogged;
+
+
+
+
+ALTER TABLE a.test SET SCHEMA b;
 
 
 ```

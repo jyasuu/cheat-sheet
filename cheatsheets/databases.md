@@ -129,7 +129,7 @@ ALTER TABLE a.test SET SCHEMA b;
 ```powershell
 .\mongosh.exe "mongodb+srv://?/" --apiVersion 1 --username ?
 docker run -ti --rm alpine/mongosh mongosh "mongodb://user:pass@host:27017/db"
-docker run -e ME_CONFIG_MONGODB_SERVER=mongodb -e ME_CONFIG_MONGODB_ENABLE_ADMIN=false -e ME_CONFIG_MONGODB_AUTH_DATABASE=db -e ME_CONFIG_MONGODB_AUTH_USERNAME=user -e ME_CONFIG_MONGODB_AUTH_PASSWORD=pass  -p 8085:8081 repo.pouchen.com/docker-proxy-group/library/mongo-express
+docker run -e ME_CONFIG_MONGODB_SERVER=mongodb -e ME_CONFIG_MONGODB_ENABLE_ADMIN=false -e ME_CONFIG_MONGODB_AUTH_DATABASE=db -e ME_CONFIG_MONGODB_AUTH_USERNAME=user -e ME_CONFIG_MONGODB_AUTH_PASSWORD=pass  -p 8085:8081 mongo-express
 ```
 
 **Basic Queries**

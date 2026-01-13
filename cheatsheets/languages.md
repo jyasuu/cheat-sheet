@@ -16,6 +16,10 @@ cargo build --release --target x86_64-unknown-linux-musl
 cargo install cross --git https://github.com/cross-rs/cross (windows depend docker)
 cross build --target x86_64-unknown-linux-gnu --release
 
+cargo rustc -- -Z unpretty=hir-tree
+cargo rustc -- -Z unpretty=hir
+
+
 cargo new my_project             # Create new project
 cargo build                      # Compile project
 cargo build --release            # Compile optimized binary

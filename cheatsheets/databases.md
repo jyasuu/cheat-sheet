@@ -81,7 +81,13 @@ SELECT nspname || '.' || relname AS "relation",
 **Others**
 
 ```sql
-\x format display
+\x -- format display
+
+\d
+\d+
+\dt
+\d+ <table_name>
+\dn
 
 SELECT jsonb_pretty(json_column::jsonb) FROM your_table;
 
@@ -117,7 +123,6 @@ alter table
 
 
 ALTER TABLE a.test SET SCHEMA b;
-
 
 ```
 

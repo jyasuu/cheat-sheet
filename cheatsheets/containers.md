@@ -108,6 +108,98 @@ kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
 kubectl create secret docker-registry gitlab-registry --docker-server=https://docker.io --docker-username=jyasu  --docker-password=jyasu --docker-email=jyasu@example.com --dry-run=client -o yaml
 ```
 
+```yml
+
+# --- Deployment ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <app-name>                      # e.g., uptime
+spec:
+  replicas: 1                           # how many Pods
+  revisionHistoryLimit: 3               # how many old ReplicaSets to keep
+  strategy:
+    type: Recreate                      # good for stateful/unique ports
+  selector:
+    matchLabels:
+      app: <app-name>                   # must match template.labels
+  template:
+    metadata:
+      labels:
+        app: <app-name>
+    spec:
+      containers:
+      - name: <container-name>          # usually same as app-name
+        image: <registry>/<repo>:<tag>  # e.g. louislam/uptime-kuma:1
+        ports:
+        - containerPort: <port>         # e.g. 3001
+        imagePullPolicy: IfNotPresent   # IfNotPresent | Always | Never
+        volumeMounts:
+        - name: <volume-name>           # must match volumes.name
+          mountPath: /data              # path inside container
+        env:
+        - name: TZ
+          value: Asia/Taipei
+        # inline env vars from ConfigMap/Secret
+        envFrom:
+        - configMapRef:
+            name: <configmap-name>
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+      volumes:
+      - name: <volume-name>
+        nfs:                            # or pvc/emptyDir/hostPath, etc.
+          server: <nfs-server>
+          path: <nfs-path>
+
+---
+
+# --- Service ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: <svc-name>                      # e.g., uptime-service
+spec:
+  selector:
+    app: <app-name>                     # must match Pod labels
+  ports:
+  - port: <svc-port>                    # cluster port
+    targetPort: <container-port>        # containerPort above
+  type: ClusterIP                       # ClusterIP | NodePort | LoadBalancer
+
+---
+
+# --- HTTPRoute (Gateway API) ---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: <route-name>
+spec:
+  parentRefs:
+  - name: <gateway-name>                # e.g., http-gateway
+    sectionName: https                  # listener name on the Gateway
+    namespace: <gateway-namespace>      # namespace of the Gateway
+  - name: <gateway-name>
+    sectionName: http
+    namespace: <gateway-namespace>
+  hostnames:
+  - "<host.example.com>"                # FQDN exposed by Gateway
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /                        # route prefix
+    backendRefs:
+    - name: <svc-name>                  # must equal Service.metadata.name
+      port: <svc-port>                  # must equal Service.spec.ports[*].port
+
+```
+
 🔗 [Kubernetes Command Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
 
 

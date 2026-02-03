@@ -124,6 +124,15 @@ alter table
 
 ALTER TABLE a.test SET SCHEMA b;
 
+select * from pg_stat_statements;
+
+-- When was the server started?
+SELECT pg_postmaster_start_time();
+
+-- If you persist stats (pg_stat_statements.save=on), they survive restarts; otherwise:
+-- You can track your own reset timestamp:
+SELECT now() AS "now", (SELECT stats_reset FROM pg_stat_statements_info) AS last_reset;
+
 ```
 
 

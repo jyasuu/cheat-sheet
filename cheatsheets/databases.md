@@ -125,6 +125,7 @@ alter table
 ALTER TABLE a.test SET SCHEMA b;
 
 select * from pg_stat_statements;
+SELECT pg_stat_statements_reset();
 
 -- When was the server started?
 SELECT pg_postmaster_start_time();

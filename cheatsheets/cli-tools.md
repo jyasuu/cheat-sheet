@@ -228,3 +228,19 @@ find ./ -type f -name "*.log" -mtime +365 -delete
 
 
 
+
+
+## git 
+
+```bash
+git add .
+git commit -m 'msg'
+git revert
+git reset HEAD~1
+git reset --hard HEAD
+git merge develop
+git checkout develop
+git rebase develop
+git diff --staged
+git show --stat 38a9fbb7
+```

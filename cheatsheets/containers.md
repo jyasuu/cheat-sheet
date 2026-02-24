@@ -67,6 +67,8 @@ kubectl run whoami --image=traefik/whoami -n demo-ns
 kubectl expose pod whoami --type=NodePort --port=80 --name=whoami-svc -n demo-ns
 kubectl get pods -n demo-ns -o wide
 kubectl get svc -n demo-ns -o wide
+kubectl run -it --rm --env="PGPASSWORD=" --env="PGUSER=" --env="PGDATABASE=" --env="PGHOST=" --image=postgres postgres -- psql
+kubectl attach postgres -c postgres -i -t
 ```
 
 **Debugging**

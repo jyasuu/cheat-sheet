@@ -68,6 +68,7 @@ codex mcp add context7 -- npx -y @upstash/context7-mcp
 ```toml
 # /zeroclaw-data/.zeroclaw/config.toml
 api_key = "" # required api key
+# default_provider = "custom:https://api.groq.com/openai/v1"
 default_provider = "custom:https://gateway.ai.cloudflare.com/v1/fa0c3c1818cd69ddde353943aa6212f6/demo/compat"
 default_model = "google-ai-studio/gemini-2.5-flash-lite"
 default_temperature = 0.7

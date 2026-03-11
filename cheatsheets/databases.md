@@ -134,6 +134,42 @@ SELECT pg_postmaster_start_time();
 -- You can track your own reset timestamp:
 SELECT now() AS "now", (SELECT stats_reset FROM pg_stat_statements_info) AS last_reset;
 
+
+WITH params AS (
+  SELECT :key::text AS key_value, :doc_id::text AS doc_id
+),
+target AS (
+  SELECT t.target_id AS resolved_target_id
+  FROM lookup_table t
+  JOIN params p ON TRUE
+  WHERE t.lookup_key = p.key_value
+  LIMIT 1
+),
+upd_clear AS (
+  UPDATE main_table m
+  SET key_col = NULL
+  FROM params p, target t
+  WHERE m.key_col = p.key_value
+    AND m.entity_id <> t.resolved_target_id
+  RETURNING m.entity_id
+),
+upd_set AS (
+  UPDATE main_table m
+  SET key_col = p.key_value
+  FROM params p, target t
+  WHERE m.entity_id = t.resolved_target_id
+    AND m.key_col IS DISTINCT FROM p.key_value
+  RETURNING m.entity_id
+)
+INSERT INTO change_log (
+  log_id, doc_id, entity_id, create_user, create_time, event_flag, event_time, event_msg
+)
+SELECT gen_uuid(), p.doc_id, c.entity_id, 0, now(), 'E', now(), 'UPDATED: CLEARED'
+FROM upd_clear c CROSS JOIN params p
+UNION ALL
+SELECT gen_uuid(), p.doc_id, s.entity_id, 0, now(), 'E', now(), 'UPDATED: SET'
+FROM upd_set s CROSS JOIN params p;
+
 ```
 
 

@@ -116,4 +116,18 @@ Get-CimInstance Win32_Process |
         }
     }
 
+$count = 1
+
+while ($count -le 5) {
+    Write-Host "Count = $count"
+    $count++
+}
+
+do {
+    & your-command
+    $exit = $LASTEXITCODE
+} while ($exit -eq 0)
+
+Write-Host "Loop ended due to non‑zero exit code: $exit"
 ```
+

@@ -55,6 +55,142 @@ docker compose start
 
 ```
 
+```sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+BACKUP_ROOT="$PWD/docker-ipam-migration"
+BACKUP_DIR="$BACKUP_ROOT/backup"
+DAEMON_JSON="/etc/docker/daemon.json"
+
+mkdir -p "$BACKUP_DIR"/{compose,networks,containers}
+date > "$BACKUP_DIR/date.txt"
+
+echo "== Docker IPAM Migration using docker compose ls =="
+
+#############################
+# 1. Backup daemon.json
+#############################
+if [[ -f "$DAEMON_JSON" ]]; then
+  cp "$DAEMON_JSON" "$BACKUP_DIR/daemon.json.bak"
+fi
+
+#############################
+# 2. Backup compose projects
+#############################
+docker compose ls --format json > "$BACKUP_DIR/compose/compose-ls.json"
+
+jq -r '.[] | "\(.Name)|\(.ConfigFiles)"' \
+  "$BACKUP_DIR/compose/compose-ls.json" |
+while IFS='|' read -r name files; do
+  mkdir -p "$BACKUP_DIR/compose/$name"
+  IFS=',' read -ra CFGS <<< "$files"
+  for f in "${CFGS[@]}"; do
+    cp "$f" "$BACKUP_DIR/compose/$name/"
+  done
+done
+
+echo "[OK] Compose files backed up"
+
+#############################
+# 3. Backup networks
+#############################
+for net in $(docker network ls --format '{{.Name}}'); do
+  docker network inspect "$net" \
+    > "$BACKUP_DIR/networks/$net.json" || true
+done
+
+#############################
+# 4. Backup containers metadata
+#############################
+for c in $(docker ps -a --format '{{.Names}}'); do
+  docker inspect "$c" \
+    > "$BACKUP_DIR/containers/$c.json"
+done
+
+echo "[OK] Metadata backup completed"
+
+#############################
+# 5. Stop all compose stacks
+#############################
+jq -r '.[].Name' "$BACKUP_DIR/compose/compose-ls.json" |
+while read -r project; do
+  docker compose -p "$project" down
+done
+
+#############################
+# 6. Remove any remaining containers
+#############################
+docker rm -f $(docker ps -aq) 2>/dev/null || true
+
+#############################
+# 7. Remove user-defined networks
+#############################
+docker network prune -f
+
+#############################
+# 8. Update Docker IPAM config
+#############################
+cat > "$DAEMON_JSON" <<'EOF'
+{
+  "data-root": "/data/docker",
+  "default-address-pools": [
+    {
+      "base": "192.168.255.1/24",
+      "size": 24
+    },
+    {
+      "base": "192.168.254.0/24",
+      "size": 28
+    }
+  ],
+  "log-driver": "json-file",
+  "log-opts": {
+      "max-file": "3",
+      "max-size": "10m"
+  }
+}
+EOF
+
+#############################
+# 9. Restart Docker
+#############################
+systemctl restart docker
+sleep 3
+
+
+#############################
+# 10. Recreate networks
+#############################
+for net_json in "$BACKUP_DIR/networks/"*.json; do
+  name=$(jq -r '.[0].Name' "$net_json")
+  driver=$(jq -r '.[0].Driver' "$net_json")
+
+  [[ "$name" =~ ^(bridge|host|none)$ ]] && continue
+
+  docker network create --driver "$driver" "$name"
+done
+
+
+#############################
+# 11. Restore compose stacks
+#############################
+jq -r '.[] | "\(.Name)|\(.ConfigFiles)"' \
+  "$BACKUP_DIR/compose/compose-ls.json" |
+while IFS='|' read -r name files; do
+  IFS=',' read -ra CFGS <<< "$files"
+
+  CMD=(docker compose -p "$name")
+  for f in "${CFGS[@]}"; do
+    CMD+=(-f "$f")
+  done
+
+  "${CMD[@]}" up -d
+done
+
+echo "== Docker IPAM Migration COMPLETE =="
+```
+
 ---
 
 ## ☸️ Kubernetes — Common Commands

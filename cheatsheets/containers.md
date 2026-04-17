@@ -138,7 +138,7 @@ cat > "$DAEMON_JSON" <<'EOF'
   "default-address-pools": [
     {
       "base": "192.168.254.0/24",
-      "size": 28
+      "size": 27
     }
   ],
   "log-driver": "json-file",

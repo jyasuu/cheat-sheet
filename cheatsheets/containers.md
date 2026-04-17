@@ -134,11 +134,8 @@ docker network prune -f
 cat > "$DAEMON_JSON" <<'EOF'
 {
   "data-root": "/data/docker",
+  "bip" : "192.168.255.1/24",
   "default-address-pools": [
-    {
-      "base": "192.168.255.1/24",
-      "size": 24
-    },
     {
       "base": "192.168.254.0/24",
       "size": 28

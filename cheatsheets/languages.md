@@ -32,6 +32,8 @@ cargo update                     # Update Cargo.lock
 cargo clean                      # Remove build artifacts
 cargo publish                    # Publish to crates.io
 cargo doc --open                 # Generate and open docs
+
+source "$HOME/.cargo/env" && sudo apt update && sudo apt-get install -y llvm-dev libclang-dev zlib1g-dev libelf-dev && cargo install bpf-linker
 ```
 
 ---

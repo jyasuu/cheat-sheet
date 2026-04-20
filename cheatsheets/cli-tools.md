@@ -244,3 +244,22 @@ git rebase develop
 git diff --staged
 git show --stat 38a9fbb7
 ```
+
+
+
+## lslocks
+
+```bash
+lslocks
+```
+
+## ss 
+
+```bash
+ss -tanp
+```
+
+## mtr
+```bash
+mtr -rwT -P 443 -c 1000
+```

@@ -170,6 +170,8 @@ UNION ALL
 SELECT gen_uuid(), p.doc_id, s.entity_id, 0, now(), 'E', now(), 'UPDATED: SET'
 FROM upd_set s CROSS JOIN params p;
 
+
+SELECT *  FROM pg_file_settings;
 ```
 
 

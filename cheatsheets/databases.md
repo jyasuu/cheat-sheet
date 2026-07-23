@@ -172,6 +172,17 @@ FROM upd_set s CROSS JOIN params p;
 
 
 SELECT *  FROM pg_file_settings;
+
+SELECT
+    blocked.pid          AS blocked_pid,
+    blocked.query        AS blocked_query,
+    blocking.pid         AS blocking_pid,
+    blocking.query       AS blocking_query,
+    blocking.state,
+    blocking.xact_start
+FROM pg_stat_activity blocked
+JOIN pg_stat_activity blocking
+ON blocking.pid = ANY(pg_blocking_pids(blocked.pid));
 ```
 
 
